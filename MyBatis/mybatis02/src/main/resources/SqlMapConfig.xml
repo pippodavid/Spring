@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!--配置properties
+    可以在标签内部配置连接数据库的信息，也可以通过属性引用外部配置文件信息
+    resource属性：
+        用于指定配置文件的位置，按照类路径的方法来写，并且必须存在于类路径下
+    url属性：
+        要求按照URL的写法来写地址
+        URL: Uniform Resource Loacate 分为协议，主机，端口，URI四部分
+        示例：http://localhost:8080/mybatis/mybatis01
+        其中URI：统一资源标识符，是在应用中可以唯一定位一个资源-->
+    <!--properties resource="jdbcConfig.properties"></properties-->
+
+    <!--使用typeAliases配置别名，它只能配置dao中的别名
+    配置别名后就不区分大小写了，通过typeAlias指定
+    另外还可以通过package指定要使用别名的包，指定后该包下的
+    实体类都会注册别名，并且类名就是别名
+    （这个示例中相当于注册了User,QureyVo,IUserDao三个别名）-->
+    <!--typeAliases>
+        <typeAlias type="com.david.User" alias="user"></typeAlias>
+        <package name="com.david"></package>
+    </typeAliases-->
+
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"></property>
+                <property name="url" value="jdbc:mysql://localhost:3306/db1"></property>
+                <property name="username" value="root"></property>
+                <property name="password" value="david"></property>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <!--mapper resource="com/david/dao/IUserDao.xml"></mapper-->
+        <!--这里是用于指定dao接口所在的包，当指定完成后就不需要再写mapper和resource或者class了-->
+        <package name="com.david.dao"></package>
+    </mappers>
+</configuration>

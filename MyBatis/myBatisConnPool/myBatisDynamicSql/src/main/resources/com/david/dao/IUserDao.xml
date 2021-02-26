@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.david.dao.IUserDao">
+    <resultMap id="userMap" type="com.david.User">
+        <!--主键对应的字段-->
+        <id property="id" column="id"></id>
+        <!--非主键对应的字段-->
+        <result property="name" column="username"></result>
+    </resultMap>
+
+    <!--抽取重复的sql语句-->
+    <!--sql id="defaultUser">
+        select * from user
+    </sql-->
+
+    <select id="findAll" resultType="com.david.User">
+        select * from user;
+    </select>
+
+    <select id="findById" parameterType="Integer" resultType="com.david.User">
+        select * from user where id=#{id};
+    </select>
+
+    <!--这里使用resultMap做实体类属性数据库字段的映射-->
+    <select id="findByName" parameterType="String" resultMap="userMap">
+        select * from user where username like #{name};
+        <!-- select * from user where username like '${%value%}'; -->
+    </select>
+
+    <select id="findByQryVo" parameterType="com.david.User" resultType="com.david.User">
+        select * from user where username like #{user.name};
+    </select>
+
+    <select id="findByCondition" resultMap="userMap" parameterType="com.david.QueryVo">
+        select * from user where 1=1
+        <if test="name != null">
+            and username = #{name}
+        </if>
+        <if test="sex != null">
+            and sex = #{sex}
+        </if>
+        <!--where>
+            <if test="name != null">
+                and username = #{name}
+            </if>
+            <if test="sex != null">
+                and sex = #{sex}
+            </if>
+        </where-->
+    </select>
+
+    <!--根据QueryVo中的id集合查询user
+    测试foreach标签的使用-->
+    <select id="findByIds" resultMap="userMap" parameterType="com.david.QueryVo" resultType="com.david.User">
+        select * from user
+        <where>
+            <if test="ids != null and ids.size() > 0">
+                <foreach collection="ids" open="and id in (" close=")" item="id" separator=",">
+                    #{id}
+                </foreach>
+            </if>
+        </where>
+    </select>
+
+</mapper>

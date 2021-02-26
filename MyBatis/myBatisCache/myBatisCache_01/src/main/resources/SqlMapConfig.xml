@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+    <settings>
+        <!--让Mybatis框架支持二级缓存
+        这里的cacheEnable不设置也可以，因为默认是开启的-->
+        <setting name="cacheEnabled" value="true"/>
+    </settings>
+    <!--使用typeAliases配置别名，它只能配置domain中类的别名 -->
+    <typeAliases>
+        <package name="com.david"></package>
+    </typeAliases>
+    <environments default="mysql">
+        <environment id="mysql">
+            <transactionManager type="JDBC"></transactionManager>
+            <!--dataSource有POOLED,UNPOOLED,JNDI三种方式，
+            使用UNPOOLED模式时，会调用UnpooledDataSource类的doGetConnection方法
+            按照注册驱动，获取连接的方式去创建一个数据库连接
+            使用POOLED模式时，会调用PooledConnection类的popConnection方法，
+            看有没有空闲连接，有就拿一个用，没有的话看连接池连接数量是否已经达到最大，
+            达到最大时返回连接池中最早的连接，没有就在连接池中建一个新的连接-->
+            <dataSource type="POOLED">
+                <property name="driver" value="com.mysql.jdbc.Driver"></property>
+                <property name="url" value="jdbc:mysql://localhost:3306/db3"></property>
+                <property name="username" value="root"></property>
+                <property name="password" value="david"></property>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <mappers>
+        <mapper class="com.david.dao.IUserDao"></mapper>
+    </mappers>
+</configuration>
