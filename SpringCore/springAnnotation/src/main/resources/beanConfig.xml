@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd">
+   <!--告知spring在创建容器时需要扫描的包，在context名称空间和约束中-->
+   <context:component-scan base-package="com.david"></context:component-scan>
+
+   <!--配置QueryRunner-->
+   <bean id="runner" class="org.apache.commons.dbutils.QueryRunner" scope="prototype">
+      <constructor-arg name="ds" ref="dataSource"></constructor-arg>
+   </bean>
+
+   <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource" destroy-method="close">
+      <property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+      <property name="jdbcUrl" value="jdbc:mysql://localhost:3306/db3"></property>
+      <property name="username" value="root"></property>
+      <property name="password" value="david"></property>
+
+      <!--设置超时-->
+      <property name="validatinTimeout" value="3000"></property>
+      <!--连接只读数据库时配置为true，更安全-->
+      <property name="readOnly" value="false"></property>
+      <!--等待连接池分配连接的最大时长，超时这个时长还没可用连接发生SQLException，缺省：30秒-->
+      <property name="connectionTimeout" value="60000"></property>
+      <!--一个连接idle状态最大时长，超时被释放(retired)，缺省：10分钟-->
+      <property name="idleTimeout" value="60000"></property>
+      <!--一个连接的生命时长(毫秒)，超时而没有被使用则被释放(retired),缺省：30分钟-->
+      <property name="maxLifetime" value="60000"></property>
+      <!--连接池中允许的最大连接数。缺省:10，推荐的公示:(core_count * 2) + effective_spindle_count-->
+      <property name="maxmumPoolSize" value="10"></property>
+   </bean>
+
+</beans>

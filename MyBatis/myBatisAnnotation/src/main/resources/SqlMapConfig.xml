@@ -7,7 +7,7 @@
     <properties resource="jdbcConfig.properties"></properties>
     <!--配置别名-->
     <typeAliases>
-        <package name="com.david"></package>
+        <typeAlias type="com.david.User" alias="user"></typeAlias>
     </typeAliases>
     <!--配置环境-->
     <environments default="mysql">
